@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 	int counter = 0;
 	int elfno = 0;
 	int tmpbuf = 0;
-	int i;
+	int i,j;
 	FILE *fd;
 
 	// Create "Key Value pair" struct. Use ints for both vars as we need to perform arithmetic on the values.
@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
 
 	struct kv_store kv[MAX_KV_LEN];
 	struct kv_store kv_total[MAX_KV_LEN];
+	struct kv_store temp;
 
 	printf("[*]AOC Day 1: Calorie Counting\n");
 
@@ -68,33 +69,27 @@ int main(int argc, char *argv[])
 			//fprintf(stdout, "NoElf: %d %d\n", kv[i].key, elfno);
 			kv_total[elfno].key = elfno;
 			kv_total[elfno].value = tmpbuf;
-
 			tmpbuf = 0;
 			elfno++;
 			continue;
 		}
 	}
 
-	// Once complete, iterate through kv_total and find the largest number, print to screen.
-	tmpbuf = kv_total[0].value;
+	// Sort kv_total by total calories in descending order. Print Element 0 and total of the first 3 elements.
 	for(i=0; i < elfno; i++)
 	{
-		if(kv_total[i].value == 0)
+		for(j=i+1; j < elfno; j++)
 		{
-			continue;
-		}
-		else
-		{
-			if(kv_total[i].value > tmpbuf)
+			if(kv_total[i].value < kv_total[j].value)
 			{
-				tmpbuf = kv_total[i].value;
-				counter = i;
+				temp=kv_total[i];
+				kv_total[i] = kv_total[j];
+				kv_total[j] = temp;
 			}
-			continue;
 		}
 	}
 
-	fprintf(stdout, "[*]The elf carrying the most calories is %d with %d", counter, tmpbuf);
-
+	fprintf(stdout, "[*]The elf carrying the most calories is %d with %d.\n", kv_total[0].key, kv_total[0].value);
+	fprintf(stdout, "[*]The 3 elves carrying the most weight are %d, %d and %d with a combined total of %d.\n", kv_total[0].key, kv_total[1].key, kv_total[2].key, (kv_total[0].value + kv_total[1].value + kv_total[2].value));
 	return 0;
 }
