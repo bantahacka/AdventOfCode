@@ -49,7 +49,6 @@ int main(int argc, char *argv[])
 		{
 			kv[counter].key = elfno;
 			sscanf(line, "%d", &kv[counter].value);
-			//fprintf(stdout, "%d + %d\n", kv[counter].key, kv[counter].value);
 			counter++;
 			continue;
 		}
@@ -66,7 +65,6 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
-			//fprintf(stdout, "NoElf: %d %d\n", kv[i].key, elfno);
 			kv_total[elfno].key = elfno;
 			kv_total[elfno].value = tmpbuf;
 			tmpbuf = 0;
